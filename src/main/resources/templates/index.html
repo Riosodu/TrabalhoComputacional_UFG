@@ -1,4 +1,4 @@
-<html lang="pt-br" xlmns:th="https://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="https://www.thymeleaf.org">
 
     <head>
         <meta charset="UTF-8">
@@ -15,6 +15,7 @@
         <script src="statics/datepicker/js/bootstrap-datepicker.pt-BR.min.js"></script>
 
         <style th:inline="text">
+
             body {
                 font-family: Arial;
 
@@ -42,43 +43,60 @@
             }
 
             .home #logo {
-                margin: 30px;
-                position: relative;
-
+                margin: 1.5em;
                 text-align: center;
             }
 
-            h1 #
-
             .search-container {
-                position: fixed;
                 margin: auto;
                 width: 85%;
             }
 
             .search-container #search-container-text {
                 text-align: left;
-                font-size: 22px;
+                font-size: 1.25em;
                 font-family: 'Roboto';
             }
 
-            .forms{
-                list-style-type: none;
-                display: inline;
 
+            .search-bar {
+                overflow: hidden;
             }
 
-            .box{
-                width: 18.0%;
+            .search-element-bar {
                 display: inline-block;
-                margin-left: 1px;
                 float: left;
+                width: auto;
+
             }
 
+            .search-element {
+                float:inherit;
+                margin-right: 0.2em;
+            }
 
-            #search-button{
-                width: 130%
+            .destinos {
+                width: 40%;
+            }
 
+            .dual-element {
+                width: 47%;
+            }
+
+            .date-box {
+                width: 25%
+            }
+
+            .element-date {
+                width
+            }
+
+            .passenger {
+                width: 15%;
+            }
+
+            .passenger-popover {
+                color: #6C757D;
             }
 
 
@@ -107,6 +125,7 @@
                     opacity: 1;
                 }
             }
+
         </style>
 
 
@@ -136,61 +155,94 @@
             <div id="logo"><h1 id="logoborder">Viaje bem, viaje conosco!</h1></div>
             <div class="search-container">
                 <div id="search-container-text">Encontre sua passagem<span class="blinking-cursor">_</span></div>
-                <div class="search-bar">
-                    <form id="search-forms">
-                        <ul class="forms">
-                            <li class=box>
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="searchbox-1" placeholder="de onde?">
+                <div class="search-bar" style="background-color: ;">
+                    <div class="search-element-bar destinos">
+                        <div class="search-element dual-element">
+                            <input type="search" class="form-control" placeholder="de onde?">
+                        </div>
+                        <div class="search-element dual-element">
+                            <input type="search" class="form-control" placeholder="para onde?">
+                        </div>
+                    </div>
+
+                    <div class="search-element-bar date-box">
+                        <div class="search-element dual-element">
+                            <div class="input-group date">
+                                <input type="text" class="form-control date-box-element" placeholder="Data de ida" style="border-radius: 0.25em">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
                                 </div>
-                            </li>
-                            <li class=box>
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="searchbox-2" placeholder="para onde?">
+                            </div>
+                        </div>
+
+                        <div class="search-element dual-element">
+                            <div class="input-group date" >
+                                <input type="text" class="form-control date-box-element" placeholder="Data de volta" style="border-radius: 0.25em;">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
                                 </div>
-                            </li>
-                            <li class=box>
-                                <div class="form-group">
-                                    <div class="input-group date" data-provide="datapicker">
-                                        <input type="text" class="form-control" id="datebox-1" placeholder="Data de ida">
-                                        <div class="input-group-addon">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class=box>
-                                <div class="form-group">
-                                    <div class="input-group date" data-provide="datapicker">
-                                        <input type="text" class="form-control" id="datebox-2" placeholder="Data de retorno">
-                                        <div class="input-group-addon">
-                                            <span class="glyphicon glyphicon-th"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="box">
-                                <button type="submit" class="btn btn-success mb-2" id="search-button">Procurar voos</button>
-                            </li>
-                        </ul>
-                    </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-element-bar passenger">
+                        <div class="search-element">
+                            <button type="search" class="form-control passenger-popover" data-toggle="popover">
+                                Passageiros
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <div id="passenger-popover-content" style="display:;">
+            <div id="maiores">
+                <div class="popover-label">
+                    <div><label>Adultos</label></div>
+                    <div><label>A partir de 18 anos</label></div>
+                </div>
+            </div>
+
+            <div id="menores">
+                <div class="popover-label">
+                    <div><label>Menores</label></div>
+                    <div><label>até 17 anos</label></div>
+                </div>
+            </div>
+
+            <div id="idade-menores">
+
+            </div>
+
+            <div id="classe">
+
+            </div>
+        </div>
+
+
+
+
         <!-- Datepicker-->
         <script type="text/javascript">
-            $('#datebox-1').datepicker({
+            $('.date-box-element').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'pt-BR',
                 startDate: '+0d',
             });
+        </script>
 
-            $('#datebox-2').datepicker({
-                format: 'dd/mm/yyyy',
-                language: 'pt-BR',
-                startDate: '+0d',
-            });
+        <script>
+
+            $('.passenger-popover').popover({
+                html: true,
+                container: 'body',
+                trigger: 'focus',
+                placement: 'bottom',
+                content: function() {
+                    return $("#passenger-popover-content").html();
+                }
+            })
         </script>
 
     </body>
