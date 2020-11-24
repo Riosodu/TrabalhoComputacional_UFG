@@ -34,7 +34,7 @@ class ProvedorCartaoTest {
         //7940.6269.0786.7151
     }
 
-    @Test
+
     void checarValidadeCartao() {
         CartaoCompra cartao;
         long numero = 0;

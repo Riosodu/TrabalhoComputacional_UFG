@@ -1,0 +1,19 @@
+[
+  {
+    "nome": "Aeroporto Internacional de Cruzeiro do Sul",
+    "sigla": "CZS",
+    "cidade": "Cruzeiro do Sul",
+    "estado": "Acre",
+    "latitude": -7.599444,
+    "longitude": -72.769444
+  },
+
+  {
+    "nome": "Aeroporto Internacional de Rio Branco",
+    "sigla": "RBR",
+    "cidade": "Rio Branco",
+    "estado": "Acre",
+    "latitude": -9.868889,
+    "longitude": -67.895833
+  }
+]
