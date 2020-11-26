@@ -15,19 +15,19 @@ class GeradorVoosTest {
         LocalTime horario;
 
         for(int i=0; i < 20; i++) {
-            horario = GeradorVoos.gerarHorarioValido(intervalo);
+            horario = Aeroporto.GeradorVoos.gerarHorarioValido(intervalo);
             System.out.println(horario);
         }
     }
 
-    @Test
+    /*@Test
     void gerarVoosTest() {
-        List<Aeroporto.Voo> voos = GeradorVoos.gerarVoos(4);
+        List<Aeroporto.Voo> voos = Aeroporto.GeradorVoos.gerarVoos(4);
 
         for(Aeroporto.Voo voo: voos) {
             System.out.println(voo + "\n");
         }
 
         System.out.println(voos.size());
-    }
+    }*/
 }

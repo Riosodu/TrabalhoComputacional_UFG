@@ -1,19 +1,993 @@
 [
-  {
-    "nome": "Aeroporto Internacional de Cruzeiro do Sul",
-    "sigla": "CZS",
-    "cidade": "Cruzeiro do Sul",
-    "estado": "Acre",
-    "latitude": -7.599444,
-    "longitude": -72.769444
-  },
+    {
+        "nome": "Aeroporto Internacional de Cruzeiro do Sul",
+        "sigla": "CZS",
+        "cidade": "Cruzeiro do Sul",
+        "estado": "Acre",
+        "siglaEstado": "AC",
+        "numeroPassageirosAno": 95300,
+        "latitude": -7.599444,
+        "longitude": -72.769444
+    },
 
-  {
-    "nome": "Aeroporto Internacional de Rio Branco",
-    "sigla": "RBR",
-    "cidade": "Rio Branco",
-    "estado": "Acre",
-    "latitude": -9.868889,
-    "longitude": -67.895833
-  }
+    {
+        "nome": "Aeroporto Internacional de Rio Branco",
+        "sigla": "RBR",
+        "cidade": "Rio Branco",
+        "estado": "Acre",
+        "siglaEstado": "AC",
+        "numeroPassageirosAno": 354249,
+        "latitude": -9.868889,
+        "longitude": -67.895833
+    },
+
+    {
+        "nome": "Aeroporto Internacional de Maceió - Zumbi dos Palmares",
+        "sigla": "MCZ",
+        "cidade": "Rio Largo",
+        "estado": "Alagoas",
+        "siglaEstado": "AL",
+        "numeroPassageirosAno": 2179230,
+        "latitude": -9.517222,
+        "longitude": -35.783611
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Macapá - Alberto Alcolumbre",
+        "sigla": "MCP",
+        "cidade": "Macapá",
+        "estado": "Amapá",
+        "siglaEstado": "AP",
+        "numeroPassageirosAno": 576257,
+        "latitude": 0.050833,
+        "longitude": -51.070278
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Manaus / Eduardo Gomes",
+        "sigla": "MAO",
+        "cidade": "Manaus",
+        "estado": "Amazonas",
+        "siglaEstado": "AM",
+        "numeroPassageirosAno": 2972583,
+        "latitude": -3.038889,
+        "longitude": -60.046111
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Tabatinga",
+        "sigla": "TBT",
+        "cidade": "Tabatinga",
+        "estado": "Amazonas",
+        "siglaEstado": "AM",
+        "numeroPassageirosAno": 72126,
+        "latitude": -4.250556,
+        "longitude": -69.937778
+    },
+    
+    {
+        "nome": "Aeroporto Júlio Belém",
+        "sigla": "PIN",
+        "cidade": "Parintins",
+        "estado": "Amazonas",
+        "siglaEstado": "AM",
+        "numeroPassageirosAno": 133000,
+        "latitude": -2.669444,
+        "longitude": -56.771111
+        
+    },
+    
+    {
+        "nome": "Aeroporto Regional de Tefé",
+        "sigla": "TFF",
+        "cidade": "Tefé",
+        "estado": "Amazonas",
+        "siglaEstado": "AC",
+        "numeroPassageirosAno": 58084,
+        "latitude": -3.380278,
+        "longitude": -64.725278
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Salvador — Deputado Luís Eduardo Magalhães",
+        "sigla": "SSA",
+        "cidade": "Salvador",
+        "estado": "Bahia",
+        "siglaEstado": "BA",
+        "numeroPassageirosAno": 8017778,
+        "latitude": -12.908611,
+        "longitude": -38.3225
+    },
+    
+    {
+        "nome": "Aeroporto Jorge Amado",
+        "sigla": "IOS",
+        "cidade": "Ilhéus",
+        "estado": "Bahia",
+        "siglaEstado": "BA",
+        "numeroPassageirosAno": 513311,
+        "latitude": -14.815,
+        "longitude": -39.033333
+    },
+    
+    {
+        "nome": "Aeroporto de Porto Seguro",
+        "sigla": "BPS",
+        "cidade": "Porto Seguro",
+        "estado": "Bahia",
+        "siglaEstado": "BA",
+        "numeroPassageirosAno": 1716037,
+        "latitude": -16.438056,
+        "longitude": -16.438056
+    },
+    
+    {
+        "nome": "Aeroporto Glauber de Andrade Rocha",
+        "sigla": "VDC",
+        "cidade": "Vitória da Conquista",
+        "estado": "Bahia",
+        "siglaEstado": "BA",
+        "numeroPassageirosAno": 198030,
+        "latitude": -14.907778,
+        "longitude": -40.914722
+    },
+    
+    {
+        "nome": "Aeroporto de Teixeira de Freitas — Aeroporto 9 de Maio",
+        "sigla": "TXF",
+        "cidade": "Teixeira de Freitas",
+        "estado": "Bahia",
+        "siglaEstado": "BA",
+        "numeroPassageirosAno": 32419,
+        "latitude": -17.524167,
+        "longitude": -39.669722
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Fortaleza - Pinto Martins",
+        "sigla": "FOR",
+        "cidade": "Fortaleza",
+        "estado": "Ceará",
+        "siglaEstado": "CE",
+        "numeroPassageirosAno": 7218697,
+        "latitude": -3.775833,
+        "longitude": -38.532222
+    },
+    
+    {
+        "nome": "Aeroporto Orlando Bezerra de Menezes",
+        "sigla": "JDO",
+        "cidade": "Juazeiro do Norte",
+        "estado": "Ceará",
+        "latitude": -7.218333,
+        "longitude": -39.271667
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Brasília – Presidente Juscelino Kubitschek",
+        "sigla": "BSB",
+        "cidade": "Brasília",
+        "estado": "Distrito Federal",
+        "siglaEstado": "DF",
+        "numeroPassageirosAno": 19821796,
+        "latitude": -15.871111,
+        "longitude": -47.918611
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Vitória – Eurico de Aguiar Salles",
+        "sigla": "VIX",
+        "cidade": "Vitória",
+        "estado": "Espírito Santo",
+        "siglaEstado": "ES",
+        "numeroPassageirosAno": 3021949,
+        "latitude": -20.256694,
+        "longitude": -40.286194
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Goiânia - Santa Genoveva",
+        "sigla": "GYN",
+        "cidade": "Goiânia",
+        "estado": "Goiás",
+        "siglaEstado": "GO",
+        "numeroPassageirosAno": 3224837,
+        "latitude": -16.629722,
+        "longitude": -49.226667
+    },
+    
+    {
+        "nome": "Aeroporto Nelson Ribeiro Guimarães",
+        "sigla": "CLV",
+        "cidade": "Caldas Novas",
+        "estado": "Goiás",
+        "siglaEstado": "GO",
+        "numeroPassageirosAno": 74884,
+        "latitude": -17.724722,
+        "longitude": -48.61
+    },
+    
+    {
+        "nome": "Aeroporto General Leite de Castro", 
+        "sigla": "RVD",
+        "cidade": "Rio Verde",
+        "estado": "Goiás",
+        "siglaEstado": "GO",
+        "numeroPassageirosAno": 31641,
+        "latitude": -17.8367769,
+        "longitude": -50.9608344
+    },
+    
+    {
+        "nome": "Aeroporto Prefeito Renato Moreira",
+        "sigla": "IMP",
+        "cidade": "Imperatriz",
+        "estado": "Maranhão",
+        "siglaEstado": "MA",
+        "numeroPassageirosAno": 338623,
+        "latitude": -5.530556,
+        "longitude": -47.458333
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Marechal Cunha Machado",
+        "sigla": "SLZ",
+        "cidade": "São Luís",
+        "estado": "Maranhão",
+        "siglaEstado": "MA",
+        "numeroPassageirosAno": 1520847,
+        "latitude": -2.585278,
+        "longitude": -44.234167
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Marechal Rondon",
+        "sigla": "CGB",
+        "cidade": "Várzea Grande",
+        "estado": "Mato Grosso",
+        "siglaEstado": "MT",
+        "numeroPassageirosAno": 3006701,
+        "latitude": -15.65,
+        "longitude": -56.1175
+    },
+    
+    {
+        "nome": "Aeroporto Piloto Oswaldo Marques Dias",
+        "sigla": "AFL",
+        "cidade": "Alta Floresta",
+        "estado": "Mato Grosso",
+        "siglaEstado": "MT",
+        "numeroPassageirosAno": 62257,
+        "latitude": -9.866389,
+        "longitude": -56.105
+    },
+    
+    {
+        "nome": "Aeroporto Municipal Maestro Marinho Franco",
+        "sigla": "ROO",
+        "cidade": "Rondonópolis",
+        "estado": "Mato Grosso",
+        "siglaEstado": "MT",
+        "numeroPassageirosAno": 70000,
+        "latitude": -16.5884465,
+        "longitude": -54.724156
+    },
+    
+    {
+        "nome": "Aeroporto Municipal Presidente João Batista Figueiredo",
+        "sigla": "OPS",
+        "cidade": "Sinop",
+        "estado": "Mato Grosso",
+        "siglaEstado": "MT",
+        "numeroPassageirosAno": 274905,
+        "latitude": -11.885,
+        "longitude": -55.586111
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Campo Grande",
+        "sigla": "CGR",
+        "cidade": "Campo Grande",
+        "estado": "Mato Grosso do Sul",
+        "siglaEstado": "MS",
+        "numeroPassageirosAno": 782538,
+        "latitude": -20.469444,
+        "longitude": -54.670278
+    }, 
+    
+    {
+        "nome": "Aeroporto Internacional de Corumbá",
+        "sigla": "CMG",
+        "cidade": "Corumbá",
+        "estado": "Mato Grosso do Sul",
+        "siglaEstado": "MS",
+        "numeroPassageirosAno": 31295,
+        "latitude": -19.511944,
+        "longitude": -57.504722
+    },
+    
+    {
+        "nome": "Aeroporto Regional Francisco de Matos Pereira",
+        "sigla": "DOU",
+        "cidade": "Dourados",
+        "estado": "Mato Grosso do Sul",
+        "siglaEstado": "MS",
+        "numeroPassageirosAno": 58000,
+        "latitude": -22.200556,
+        "longitude": -54.425556
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Tancredo Neves",
+        "sigla": "CNF",
+        "cidade": "Confins",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 10304284,
+        "latitude": -19.624444,
+        "longitude": -43.971944
+    },
+    
+    {
+        "nome": "Aeroporto Regional do Vale do Aço",
+        "sigla": "IPN",
+        "cidade": "Santana do Paraíso",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 69664,
+        "latitude": -19.470556,
+        "longitude": -42.488056
+    },
+    
+    {
+        "nome": "Aeroporto de Montes Claros - Mário Ribeiro",
+        "sigla": "MOC",
+        "cidade": "Montes Claros",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 188251,
+        "latitude": -16.706111,
+        "longitude": -43.821944
+    }, 
+    
+    {
+        "nome": "Aeroporto Carlos Drummond de Andrade",
+        "sigla": "PLU",
+        "cidade": "Belo Horizonte",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 213859,
+        "latitude": -19.851944,
+        "longitude": -43.950556
+    },
+    
+    {
+        "nome": "Aeroporto Mário de Almeida Franco",
+        "sigla": "UBA",
+        "cidade": "Uberaba",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 88630,
+        "latitude": -19.7914507,
+        "longitude": -47.9747706
+    },
+    
+    {
+        "nome": "Aeroporto Tenente Coronel Aviador César Bombonato",
+        "sigla": "UDI",
+        "cidade": "Uberlândia",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 1136908,
+        "latitude": -18.883611,
+        "longitude": -48.225278
+    },
+    
+    {
+        "nome": "Aeroporto Coronel Altino Machado de Oliveira",
+        "sigla": "GVR",
+        "cidade": "Governador Valadares",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 86950,
+        "latitude": -18.896944,
+        "longitude": -41.986111
+    },
+    
+    {
+        "nome": "Aeroporto Major Brigadeiro Trompowsky",
+        "sigla": "VAG",
+        "cidade": "Varginha",
+        "estado": "Minas Gerais",
+        "siglaEstado": "MG",
+        "numeroPassageirosAno": 80652,
+        "latitude": -21.5887232,
+        "longitude": -45.478582
+    },
+    
+    {
+        "nome": "Aeroporto de Altamira",
+        "sigla": "ATM",
+        "cidade": "Altamira",
+        "estado": "Pará",
+        "siglaEstado": "PA",
+        "numeroPassageirosAno": 111068,
+        "latitude": -3.250833,
+        "longitude": -52.252222
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Júlio Cezar Ribeiro",
+        "sigla": "BEL",
+        "cidade": "Belém",
+        "estado": "Pará",
+        "siglaEstado": "PA",
+        "numeroPassageirosAno": 32825123,
+        "latitude": -1.437778,
+        "longitude":  -48.468889
+    },
+    
+    {
+        "nome": "Aeroporto João Correa da Rocha",
+        "sigla": "MAB",
+        "cidade": "Marabá",
+        "estado": "Pará",
+        "siglaEstado": "PA",
+        "numeroPassageirosAno": 188723,
+        "latitude": -5.367778,
+        "longitude": -49.138333
+    },
+    
+    {
+        "nome": "Aeroporto de Carajás/Parauapebas",
+        "sigla": "CKS",
+        "cidade": "Parauapebas",
+        "estado": "Pará",
+        "siglaEstado": "PA",
+        "numeroPassageirosAno": 39609,
+        "latitude": -6.1147557,
+        "longitude": -50.0031573
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Maestro Wilson Fonseca",
+        "sigla": "STM",
+        "cidade": "Santarém",
+        "estado": "Pará",
+        "siglaEstado": "PA",
+        "numeroPassageirosAno": 665717,
+        "latitude": -2.4225,
+        "longitude": -54.792778
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de João Pessoa - Presidente Castro Pinto",
+        "sigla": "JPA",
+        "cidade": "Santa Rita",
+        "estado": "Paraíba",
+        "siglaEstado": "PB",
+        "numeroPassageirosAno": 1418380,
+        "latitude": -7.148333,
+        "longitude": -34.950556
+    },
+    
+    {
+        "nome": "Aeroporto de Campina Grande - Presidente João Suassuna",
+        "sigla": "CPV",
+        "cidade": "Campina Grande",
+        "estado": "Paraíba",
+        "siglaEstado": "PB",
+        "numeroPassageirosAno": 137922,
+        "latitude": -7.269722,
+        "longitude": -35.896389
+    },
+    
+    {
+        "nome": "Aeroporto de Londrina - Governador José Richa",
+        "sigla": "LDB",
+        "cidade": "Londrina",
+        "estado": "Paraná",
+        "siglaEstado": "PR",
+        "numeroPassageirosAno": 520762,
+        "latitude": -23.330278,
+        "longitude": -51.136667
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Afonso Pena",
+        "sigla": "CWB",
+        "cidade": "Curitiba / São José dos Pinhais",
+        "estado": "Paraná",
+        "siglaEstado": "PR",
+        "numeroPassageirosAno": 7235634,
+        "latitude": -25.531667,
+        "longitude": -49.176111
+    },
+    
+    {
+        "nome": "Aeroporto de Bacacheri",
+        "sigla": "BFH",
+        "cidade": "Curitiba",
+        "estado": "Paraná",
+        "siglaEstado": "PR",
+        "numeroPassageirosAno": 46687,
+        "latitude": -25.403333,
+        "longitude": -49.233611
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Foz do Iguaçu/Cataratas",
+        "sigla": "IGU",
+        "cidade": "Foz do Iguaçu",
+        "estado": "Paraná",
+        "siglaEstado": "PR",
+        "numeroPassageirosAno": 2413965,
+        "latitude": -25.600278,
+        "longitude": -54.485
+    },
+    
+    {
+        "nome": "Aeroporto Municipal de Cascavel - Coronel Adalberto Mendes da Silva",
+        "sigla": "CAC",
+        "cidade": "Cascavel",
+        "estado": "Paraná",
+        "siglaEstado": "PR",
+        "numeroPassageirosAno": 250146,
+        "latitude": -25.002222,
+        "longitude": -53.501944
+    },
+    
+    {
+        "nome": "Aeroporto Regional de Maringá - Silvio Name Júnior",
+        "sigla": "MGF",
+        "cidade": "Maringá",
+        "estado": "Paraná",
+        "siglaEstado": "PR",
+        "numeroPassageirosAno": 741800,
+        "latitude": -23.479444,
+        "longitude": -52.012222
+    },
+    
+    {
+        "nome": "Aeroporto de Petrolina - Senador Nilo Coelho",
+        "sigla": "PNZ",
+        "cidade": "Petrolina",
+        "estado": "Pernambuco",
+        "siglaEstado": "PE",
+        "numeroPassageirosAno": 458588,
+        "latitude": -9.3625,
+        "longitude": -40.569167
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Recife/Guararapes - Gilberto Freyre",
+        "sigla": "REC",
+        "cidade": "Recife",
+        "estado": "Pernambuco",
+        "siglaEstado": "PE",
+        "numeroPassageirosAno": 8422566,
+        "latitude": -8.126389,
+        "longitude": -34.922778
+    },
+    
+    {
+        "nome": "Aeroporto de Fernando de Noronha - Governador Carlos Wilson",
+        "sigla": "FEN",
+        "cidade": "Fernando de Noronha",
+        "estado": "Pernambuco",
+        "siglaEstado": "PE",
+        "numeroPassageirosAno": 112360,
+        "latitude": -3.8546091,
+        "longitude": -32.426574
+    },
+    
+    {
+        "nome": "Aeroporto de Teresina - Senador Petrônio Portella",
+        "sigla": "THE",
+        "cidade": "Teresina",
+        "estado": "Piauí",
+        "siglaEstado": "PI",
+        "numeroPassageirosAno": 1177321,
+        "latitude": -5.060556,
+        "longitude": -42.824444
+    },
+    
+    {
+        "nome": "Aeroporto Internacional Tom Jobim / Galeão",
+        "sigla": "GIG",
+        "cidade": "Rio de Janeiro",
+        "estado": "Rio de Janeiro",
+        "siglaEstado": "RJ",
+        "numeroPassageirosAno": 18942229,
+        "latitude": -22.81,
+        "longitude": -43.250556
+    },
+    
+    {
+        "nome": "Aeroporto de Campos dos Goytacazes - Bartolomeu Lisandro",
+        "sigla": "CAW",
+        "cidade": "Campo dos Goytacazes",
+        "estado": "Rio do Janeiro",
+        "numeroPassageirosAno": 34255,
+        "latitude": -21.701111,
+        "longitude": -41.307778
+    },
+    
+    {
+        "nome": "Aeroporto de Jacarepaguá - Roberto Marinho",
+        "sigla": "RRJ",
+        "cidade": "Rio de Janeiro",
+        "estado": "Rio de Janeiro",
+        "siglaEstado": "RJ",
+        "numeroPassageirosAno": 134247,
+        "latitude": -22.9876215,
+        "longitude": -43.3722676
+    },
+    
+    {
+        "nome": "Aeroporto de Macaé - Joaquim de Azevedo Mancebo",
+        "sigla": "MEA",
+        "cidade": "Macaé",
+        "estado": "Rio de Janeiro",
+        "siglaEstado": "RJ",
+        "numeroPassageirosAno": 216254,
+        "latitude": -22.342778,
+        "longitude": -41.763889
+    },
+    
+    {
+        "nome": "Aeroporto do Rio de Janeiro-Santos Dumont",
+        "sigla": "NAT",
+        "cidade": "Rio de Janeiro",
+        "estado": "Rio de Janeiro",
+        "siglaEstado": "RJ",
+        "numeroPassageirosAno": 4851809,
+        "latitude": -22.91,
+        "longitude": -43.1625  
+    },
+    
+    
+    {
+        "nome": "Aeroporto Internacional de Natal - Governador Aluízio Alves",
+        "sigla": "SDU",
+        "cidade": "Natal / São Gonçalo do Amarante",
+        "estado": "Rio Grande do Norte",
+        "siglaEstado": "RS",
+        "numeroPassageirosAno": 2429389,
+        "latitude": -5.7688765,
+        "longitude": -35.3682608
+    },
+    
+    {
+        "nome": "Aeroporto de Mossoró — Governador Dix-Sept Rosado",
+        "sigla": "MVF",
+        "cidade": "Mossoró",
+        "estado": "Rio Grande do Norte",
+        "siglaEstado": "RN",
+        "numeroPassageirosAno": 35462,
+        "latitude": -5.195833,
+        "longitude": -37.361667
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Porto Alegre – Salgado Filho",
+        "sigla": "POA",
+        "cidade": "Porto Alegre",
+        "estado": "Rio Grande do Sul",
+        "siglaEstado": "RS",
+        "numeroPassageirosAno": 8292608,
+        "latitude": -29.993889,
+        "longitude": -51.171111
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Pelotas - João Simões Lopes Neto",
+        "sigla": "PET",
+        "cidade": "Pelotas",
+        "estado": "Rio Grande do Sul",
+        "siglaEstado": "RS",
+        "numeroPassageirosAno": 48944,
+        "latitude": -31.7158181,
+        "longitude": -52.3328774
+    },
+    
+    {
+        "nome": "Aeroporto Regional de Caxias do Sul - Hugo Cantergiani",
+        "sigla": "CXJ",
+        "cidade": "Caxias do Sul",
+        "estado": "Rio Grande do Sul",
+        "siglaEstado": "RS",
+        "numeroPassageirosAno": 241527,
+        "latitude": -29.195556,
+        "longitude": -51.189722
+    },
+    
+    {
+        "nome": "Aeroporto de Passo Fundo - Lauro Kortz",
+        "sigla": "PFB",
+        "cidade": "Passo Fundo",
+        "estado": "Rio Grande do Sul",
+        "siglaEstado": "RS",
+        "numeroPassageirosAno": 165542,
+        "latitude": -28.2420149,
+        "longitude": -52.3319478
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Porto Velho – Governador Jorge",
+        "sigla": "PVH",
+        "cidade": "Porto Velho",
+        "estado": "Rondônia",
+        "siglaEstado": "RO",
+        "numeroPassageirosAno": 832326,
+        "latitude": -8.713611, 
+        "longitude": -63.902778
+    },
+    
+    {
+        "nome": "Aeroporto de Ji-Paraná – José Coleto",
+        "sigla": "JPR",
+        "cidade": "Ji-Paraná",
+        "estado": "Rondônia",
+        "siglaEstado": "RO",
+        "numeroPassageirosAno": 36033,
+        "latitude": -10.870556, 
+        "longitude": -61.846667
+        
+    },
+    
+    {
+        "nome": "Aeroporto de Cacoal – Capital do Café",
+        "sigla": "OAL",
+        "cidade": "Cacoal",
+        "estado": "Rondônia",
+        "siglaEstado": "RO",
+        "numeroPassageirosAno": 55472,
+        "latitude": -11.495556, 
+        "longitude": -61.450833
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Boa Vista - Atlas Brasil Cantanhede",
+        "sigla": "BVB",
+        "cidade": "Boa Vista",
+        "estado": "Roraima",
+        "siglaEstado": "RR",
+        "numeroPassageirosAno": 306178,
+        "latitude": 2.841389, 
+        "longitude": -60.692222
+    },
+    
+    
+    {
+        "nome": "Aeroporto Internacional de Florianópolis – Hercílio Luz",
+        "sigla": "FLN",
+        "cidade": "Florianópolis",
+        "estado": "Santa Catarina",
+        "siglaEstado": "SC",
+        "numeroPassageirosAno": 3824492,
+        "latitude": -27.670278, 
+        "longitude": -48.5525
+    },
+    
+    {
+        "nome": "Aeroporto de Forquilhinha - Diomício Freitas",
+        "sigla": "CCM",
+        "cidade": "Forquilhinha",
+        "estado": "Santa Catarina",
+        "siglaEstado": "SC",
+        "numeroPassageirosAno": 39372,
+        "latitude": -28.724444, 
+        "longitude": -49.421111
+    },
+    
+    {
+        "nome": "Aeroporto Regional Sul - Humberto Ghizzo Bortoluzzi",
+        "sigla": "JJG",
+        "cidade": "Jaguaruna",
+        "estado": "Santa Catarina",
+        "siglaEstado": "SC",
+        "numeroPassageirosAno": 146247,
+        "latitude": -28.675278, 
+        "longitude": -49.060278
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Navegantes - Ministro Victor Konder",
+        "sigla": "NVT",
+        "cidade": "Navegantes",
+        "estado": "Santa Catarina",
+        "siglaEstado": "SC",
+        "numeroPassageirosAno": 1886838,
+        "latitude": -26.878611, 
+        "longitude": -48.650833
+    },
+    
+    {
+        "nome": "Aeroporto de Joinville - Lauro Carneiro de Loyola",
+        "sigla": "JOI",
+        "cidade": "Joinville",
+        "estado": "Santa Catarina",
+        "siglaEstado": "SC",
+        "numeroPassageirosAno": 486023,
+        "latitude": -26.223056, 
+        "longitude": -48.797778
+    },
+    
+    {
+        "nome": "Aeroporto de Chapecó - Serafim Enoss Bertaso",
+        "sigla": "XAP",
+        "cidade": "Chapecó",
+        "estado": "Santa Catarina",
+        "siglaEstado": "SC",
+        "numeroPassageirosAno": 564995,
+        "latitude": -27.133889, 
+        "longitude": -52.661944
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de São Paulo/Guarulhos – Governador André Franco Montoro",
+        "sigla": "GRU",
+        "cidade": "Guarulhos",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 42831981,
+        "latitude": -23.431944, 
+        "longitude": -46.469444
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Viracopos-Campinas",
+        "sigla": "VCP",
+        "cidade": "Campinas",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 10585018,
+        "latitude": -23.006944, 
+        "longitude": -47.134444
+    },
+    
+    {
+        "nome": "Aeroporto Estadual Campo dos Amarais",
+        "sigla": "CPQ",
+        "cidade": "Campinas",
+        "estado": "Sao Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 33818,
+        "latitude": -22.8633734,
+        "longitude": -47.1074116
+    },
+    
+    {
+        "nome": "Aeroporto de São Paulo/Congonhas - Deputado Freitas Nobre",
+        "sigla": "CGH",
+        "cidade": "São Paulo",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 21637662,
+        "latitude": -23.626111, 
+        "longitude": -46.656389
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de São José dos Campos - Professor Urbano Ernesto Stumpf",
+        "sigla": "SJK",
+        "cidade": "São José dos Campos",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 212573,
+        "latitude": -23.2252994,
+        "longitude": -45.8637649
+    },
+    
+    {
+        "nome": "Aeroporto de Araçatuba - Dario Guarita",
+        "sigla": "ARU",
+        "cidade": "Araçatuba",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 115671,
+        "latitude": -21.144167, 
+        "longitude": -50.418056
+    },
+    
+    {
+        "nome": "Aeroporto Estadual de Bauru/Arealva - Moussa Nakhl Tobias",
+        "sigla": "JTC",
+        "cidade": "Bauru",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 69333,
+        "latitude": -22.157778, 
+        "longitude": -49.068333
+    },
+    
+    {
+        "nome": "Aeroporto Estadual de Marília - Frank Miloye Milenkovich",
+        "sigla": "MII",
+        "cidade": "Marília",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 33545,
+        "latitude": -22.195556, 
+        "longitude": -49.926944
+    },
+    
+    {
+        "nome": "Aeroporto Estadual de Presidente Prudente - Adhemar de Barros",
+        "sigla": "PPB",
+        "cidade": "Presidente Prudente",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 319059,
+        "latitude": -22.178333, 
+        "longitude": -51.418889
+    },
+    
+    {
+        "nome": "Aeroporto Estadual de Ribeirão Preto - Doutor Leite Lopes",
+        "sigla": "RAO",
+        "cidade": "Ribeirão Preto",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 923617,
+        "latitude": -21.1391592,
+        "longitude": -47.7787595
+    },
+    
+    {
+        "nome": "Aeroporto Estadual de São José do Rio Preto - Professor Eribelto Manoel Reino",
+        "sigla": "SJP",
+        "cidade": "São José do Rio Preto",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 768117,
+        "latitude": -20.8123783,
+        "longitude": -49.4070988
+    },
+    
+    {
+        "nome": "Aeroporto Estadual de Sorocaba - Bertram Luiz Leupolz",
+        "sigla": "SOD",
+        "cidade": "Sorocaba",
+        "estado": "São Paulo",
+        "siglaEstado": "SP",
+        "numeroPassageirosAno": 77776,
+        "latitude": -23.4818136,
+        "longitude": -47.4884497
+    },
+    
+    {
+        "nome": "Aeroporto Internacional de Aracaju - Santa Maria",
+        "sigla": "AJU",
+        "cidade": "Aracaju",
+        "estado": "Sergipe",
+        "siglaEstado": "SE",
+        "numeroPassageirosAno": 1616878,
+        "latitude": -10.985278, 
+        "longitude": -37.073333
+    },
+    
+    {
+        "nome": "Aeroporto de Palmas - Brigadeiro Lysias Rodrigues",
+        "sigla": "PMW",
+        "cidade": "Palmas",
+        "estado": "Tocantins",
+        "siglaEstado": "TO",
+        "numeroPassageirosAno": 673112,
+        "latitude": -10.29, 
+        "longitude": -48.357778
+    },
+    
+    {
+        "nome": "Aeroporto Regional de Araguaína",
+        "sigla": "AUX",
+        "cidade": "Araguaína",
+        "estado": "Tocantins",
+        "siglaEstado": "TO",
+        "numeroPassageirosAno": 35.294,
+        "latitude": -7.228333, 
+        "longitude": -48.240833
+    }
+
 ]

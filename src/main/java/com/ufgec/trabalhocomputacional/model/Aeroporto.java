@@ -3,10 +3,14 @@ package com.ufgec.trabalhocomputacional.model;
 import com.google.gson.Gson;
 import com.ufgec.trabalhocomputacional.classes.TipoVoo;
 import com.ufgec.trabalhocomputacional.utils.Haversine;
+import com.ufgec.trabalhocomputacional.utils.ListaAleatoriaPonderada;
+import com.ufgec.trabalhocomputacional.utils.Uteis;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,7 +24,7 @@ import java.util.*;
  */
 @Entity
 @Table(name="TB_AEROPORTO")
-public class Aeroporto {
+public class Aeroporto implements Comparable<Aeroporto>{
 
     @Id
     private String nome;
@@ -31,14 +35,20 @@ public class Aeroporto {
 
     private String estado;
 
+    private String siglaEstado;
+
+    private int numeroPassageirosAno;
+
     private double latitude;
 
     private double longitude;
 
+
+
     /**
      * Nesta variável estão armazenados todos os aeroportos válidos(criados)
      */
-    public static final Map<String, Aeroporto> AEROPORTOS = new HashMap<>();
+    public static final SortedMap<String, Aeroporto> AEROPORTOS = new TreeMap<>();
     /**
      * Nesta variável estão armazenadas todas as decolagens de um aeroporto
      */
@@ -48,14 +58,23 @@ public class Aeroporto {
      */
     private NavigableSet<Voo> voosParaAqui = new TreeSet<>();
 
-    private Aeroporto(String nome, String sigla, String cidade, String estado,
-                     double latitude, double longitude) {
+    /**
+     * Este número representa o coeficiente de redução do número de passageiros por ano.
+     */
+    private static final int coeficienteReducao = 5;
+
+    Aeroporto(String nome, String sigla, String cidade, String estado, String siglaEstado,
+              int numeroPassageirosAno, double latitude, double longitude) {
         this.nome = nome;
         this.sigla = sigla;
         this.cidade = cidade;
         this.estado = estado;
+        this.siglaEstado = siglaEstado;
+        this.numeroPassageirosAno = numeroPassageirosAno;
         this.latitude = latitude;
         this.longitude = longitude;
+        retificarNumeroPassageirosAno();
+
 
         try { //Checa se já não existe armazenado um objeto como este, caso não, adiciona ao armazenamento
             if (AEROPORTOS.containsKey(this.sigla))
@@ -65,6 +84,10 @@ public class Aeroporto {
         } catch(IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    private void retificarNumeroPassageirosAno() {
+        numeroPassageirosAno = numeroPassageirosAno / coeficienteReducao;
     }
 
     public String getNome() {
@@ -83,6 +106,14 @@ public class Aeroporto {
         return estado;
     }
 
+    public String getSiglaEstado() {
+        return siglaEstado;
+    }
+
+    public int getNumeroPassageirosAno() {
+        return numeroPassageirosAno;
+    }
+
     public double getLatitude() {
         return latitude;
     }
@@ -92,111 +123,69 @@ public class Aeroporto {
     }
 
     /**
-     * Esta classe serve para fins de desenvolvimento.
-     * A partir dessa classe é possível gerar um novo Aeroporto
-     * usando um arquivo JSON
-     */
-    public static Aeroporto novoAeroportoViaJSON(String json) {
-        Aeroporto aeroporto = new Gson().fromJson(String.valueOf(json), Aeroporto.class);
-        AEROPORTOS.put(aeroporto.sigla, aeroporto);
-        aeroporto.voosDaqui = new TreeSet<>();
-        aeroporto.voosParaAqui = new TreeSet<>();
-
-        return aeroporto;
-    }
-
-    /**
-     * Esta classe serve para fins de desenvolvimento.
-     * A partir dessa classe é possível gerar vários novos Aeroporto
-     * usando um arquivo JSON
-     */
-    public static Aeroporto[] novosAeroportosViaJSON(String json) {
-        Aeroporto[] aeroportos = new Gson().fromJson(String.valueOf(json), Aeroporto[].class);
-        for(Aeroporto aeroporto: aeroportos) {
-            AEROPORTOS.put(aeroporto.sigla, aeroporto);
-            aeroporto.voosDaqui = new TreeSet<>();
-            aeroporto.voosParaAqui = new TreeSet<>();
-        }
-
-        return aeroportos;
-    }
-
-    /**
      * Este método calcula a distância entre dois aeroportos a partir
      * da fórmula de Haversine
      * @param outroAeroporto é o outro aeroporto que será medida a distância
      * @return distância entre dois aeroportos;
      */
     public double distancia(Aeroporto outroAeroporto) {
+        if()
         return Haversine.distance(this.latitude, this.longitude, outroAeroporto.latitude, outroAeroporto.longitude);
     }
 
     /**
-     * Retorna todas as decolagens deste aeroporto em um determinado intervalo,
-     * que possuam assentos reservados para a classe selecionada
-     * @param tipoVoo é a tipo da classe da passagem/voo
+     * Retorna todas as decolagens deste aeroporto em um determinado intervalo.
      * @param dataInicial é a data que delimitará o inicio do intervalo de busca
      * @param dataFinal é a data que delimitará o fim do intervalo de busca
      */
-    public ArrayList<Voo> voosDaquiNumIntervalo(TipoVoo tipoVoo, LocalDate dataInicial, LocalDate dataFinal) {
-        Voo[] voos = voosLocalDate(tipoVoo, dataInicial, dataFinal);
+    public List<Voo> voosDaquiNumIntervalo(LocalDate dataInicial, LocalDate dataFinal) {
+        Voo[] voos = voosIntervaloData(dataInicial, dataFinal);
 
         Voo elementoInicial = voosDaqui.ceiling(voos[0]);
         Voo elementoFinal = voosDaqui.floor(voos[1]);
 
-        TipoVoo[] voosDoTipo = tipoVoo.getClassesDisponiveis();
-        ArrayList<Voo> listaVoos = new ArrayList<>();
-        SortedSet<Voo> voosClasse;
-
-        for(TipoVoo classe: voosDoTipo) {
-            voosClasse = voosDaqui.subSet(elementoInicial, elementoFinal);
-            listaVoos.addAll(voosClasse);
-            listaVoos.sort(null);
-        }
-
-        return listaVoos;
+        return new ArrayList<>(voosDaqui.subSet(elementoInicial, elementoFinal));
     }
 
     /**
-     * Retorna todos os pousos deste aeroporto em um determinado intervalo,
-     * que possuam assentos reservados para a classe selecionada
-     * @param tipoVoo é a tipo da classe da passagem/voo
+     * Retorna todos os pousos deste aeroporto em um determinado intervalo.
      * @param dataInicial é a data que delimitará o inicio do intervalo de busca
      * @param dataFinal é a data que delimitará o fim do intervalo de busca
      */
-    public ArrayList<Voo> voosParaAquiNumIntervalo(TipoVoo tipoVoo, LocalDate dataInicial, LocalDate dataFinal) {
-        Voo[] voos = voosLocalDate(tipoVoo, dataInicial, dataFinal);
+    public List<Voo> voosParaAquiNumIntervalo(LocalDate dataInicial, LocalDate dataFinal) {
+        Voo[] voos = voosIntervaloData(dataInicial, dataFinal);
 
         Voo elementoInicial = voosParaAqui.ceiling(voos[0]);
         Voo elementoFinal = voosParaAqui.floor(voos[1]);
 
-        TipoVoo[] voosDoTipo = tipoVoo.getClassesDisponiveis();
-        ArrayList<Voo> listaVoos = new ArrayList<>();
-        SortedSet<Voo> voosClasse;
-
-        for(TipoVoo classe: voosDoTipo) {
-            voosClasse = voosParaAqui.subSet(elementoInicial, elementoFinal);
-            listaVoos.addAll(voosClasse);
-            listaVoos.sort(null);
-        }
-
-        return listaVoos;
+        return new ArrayList<>(voosParaAqui.subSet(elementoInicial, elementoFinal));
     }
 
     /**
      * Esta classe encapsula código em comum entre os métodos
      * voosDaquiNumIntervalo e voosParaAquiNumIntervalo()
      */
-    private Voo[] voosLocalDate(TipoVoo tipoVoo, LocalDate dataInicial, LocalDate dataFinal) {
+    private Voo[] voosIntervaloData(LocalDate dataInicial, LocalDate dataFinal) {
         Voo[] voos = new Voo[2];
         LocalDateTime inicial = LocalDateTime.of(dataInicial, LocalTime.of(0,0));
         LocalDateTime f_nal = LocalDateTime.of(dataFinal, LocalTime.of(23,59,59));
 
-        voos[0] = new Voo(tipoVoo, inicial);
-        voos[1] = new Voo(tipoVoo, f_nal);
+        voos[0] = new Voo();
+        voos[0].horarioPartida = inicial;
+        voos[1] = new Voo();
+        voos[1].horarioPartida = f_nal;
 
         return voos;
     }
+
+    public List<Voo> voosParaAquiDe(Aeroporto origem) {
+        return null;
+    }
+
+    public int mediaVoosDiarios() {
+        int passageirosPorDia = (numeroPassageirosAno / 365);
+        return passageirosPorDia / TipoVoo.mediaPassageirosPorVoo();
+     }
 
     @Override
     public boolean equals(Object o) {
@@ -227,13 +216,14 @@ public class Aeroporto {
         return toString;
     }
 
-
-
-
-
-
-
-
+    @Override
+    public int compareTo(Aeroporto o) {
+        return Comparator.comparing(Aeroporto::getNumeroPassageirosAno)
+                .thenComparing(Aeroporto::getEstado)
+                .thenComparing(Aeroporto::getCidade)
+                .thenComparing(Aeroporto::getSigla)
+                .compare(this, o);
+    }
 
 
     /**
@@ -266,8 +256,7 @@ public class Aeroporto {
          * Os objetos criados a partir deste construtor não são contabilizados na contagem
          * de voos existentes.
          */
-        private Voo(TipoVoo tipoVoo, LocalDateTime horarioPartida) {
-            inicializador(tipoVoo, horarioPartida);
+        private Voo() {
         }
 
         /**
@@ -276,8 +265,20 @@ public class Aeroporto {
         public Voo(TipoVoo tipoVoo, Aeroporto localOrigem, Aeroporto localDestino, LocalDateTime horarioPartida) throws IllegalArgumentException {
             this.localOrigem = localOrigem;
             this.localDestino = localDestino;
-            inicializador(tipoVoo, horarioPartida);
+            this.horarioPartida = horarioPartida;
+            setPrevisaoChegada();
 
+            this.tipoVoo = tipoVoo;
+            TipoVoo[] classesDisponiveis = this.tipoVoo.getClassesDisponiveis();
+
+            poltronas = new HashMap<>();
+            poltronasDisponiveis = new HashMap<>();
+            for (TipoVoo classe : classesDisponiveis) {//Inicializa o mapa das poltronas e a quantidade de poltronas disponíveis
+                poltronas.put(classe, new TreeMap<>());
+                poltronasDisponiveis.put(classe, classe.getQuantidadeAssentos());
+            }
+
+            id = hashCode();
 
             try { //Checa se já não existe armazenado um objeto como este, caso não, adiciona ao armazenamento
                 if(localOrigem.voosDaqui.contains(this))
@@ -293,25 +294,6 @@ public class Aeroporto {
                 e.printStackTrace();
                 throw e;
             }
-        }
-
-        /**
-         * Este método encapsula código em comum entre os dois construtores.
-         */
-        private void inicializador(TipoVoo tipoVoo, LocalDateTime horarioPartida) {
-            this.horarioPartida = horarioPartida;
-            setPrevisaoChegada();
-
-            this.tipoVoo = tipoVoo;
-            TipoVoo[] classesDisponiveis = this.tipoVoo.getClassesDisponiveis();
-
-            poltronas = new HashMap<>();
-            poltronasDisponiveis = new HashMap<>();
-            for (TipoVoo classe : classesDisponiveis) {//Inicializa o mapa das poltronas e a quantidade de poltronas disponíveis
-                poltronas.put(classe, new TreeMap<>());
-                poltronasDisponiveis.put(classe, classe.getQuantidadeAssentos());
-            }
-            id = hashCode();
         }
 
 
@@ -345,6 +327,7 @@ public class Aeroporto {
             int horas, minutos;
             horas = (int) razaoTempo;
             minutos = (int) (((razaoTempo - horas)) * 60);
+            minutos = Uteis.arredondarParaProximo5(minutos);
 
             previsaoChegada = horarioPartida.plusHours(horas).plusMinutes(minutos);
         }
@@ -402,16 +385,10 @@ public class Aeroporto {
          */
         @Override
         public int compareTo(Voo o) {
-            if(this.horarioPartida.isEqual(o.horarioPartida))
-                if(this.id.equals(o.id))
-                    return 0;
-                else
-                    return this.id - o.id;
-            else
-            if(horarioPartida.isAfter(o.horarioPartida))
-                return Math.abs(this.id - o.id);
-            else
-                return -1 * Math.abs(this.id - o.id);
+            return Comparator.comparing(Voo::getHorarioPartida)
+                    .thenComparing(Voo::getPrevisaoChegada)
+                    .thenComparing(Voo::getId)
+                    .compare(this, o);
         }
 
         @Override
@@ -455,4 +432,186 @@ public class Aeroporto {
             return toString.toString();
         }
     }
+
+
+    /**
+     * Esta classe é uma classe de utilidade que gera voos aleatoriamente, respeitando certos parâmetros.
+     */
+    public static class GeradorVoos {
+        //--------------------------------------------------------------------------------------------------------------//
+        //Este bloco define constantes de períodos do dia.
+        private static final LocalTime[] MANHA_EARLY = {LocalTime.of(6, 0), LocalTime.of(7,59)};
+        private static final LocalTime[] MANHA_MID = {LocalTime.of(8, 0), LocalTime.of(9,59)};
+        private static final LocalTime[] MANHA_LATE = {LocalTime.of(10, 0), LocalTime.of(11, 59)};
+        private static final LocalTime[] TARDE_EARLY = {LocalTime.of(12, 0), LocalTime.of(13, 59)};
+        private static final LocalTime[] TARDE_MID = {LocalTime.of(14, 0), LocalTime.of(15, 59)};
+        private static final LocalTime[] TARDE_LATE = {LocalTime.of(16, 0), LocalTime.of(17,59)};
+        private static final LocalTime[] NOITE_EARLY = {LocalTime.of(18, 0), LocalTime.of(19,59)};
+        private static final LocalTime[] NOITE_MID = {LocalTime.of(20, 0), LocalTime.of(21, 59)};
+        private static final LocalTime[] NOITE_LATE = {LocalTime.of(22, 0), LocalTime.of(23,59)};
+        private static final LocalTime[] MADRUGADA = {LocalTime.of(0, 0), LocalTime.of(5, 59)};
+        //--------------------------------------------------------------------------------------------------------------//
+
+        public static List<Voo> gerarVoos(int dias) {
+            //----------------------------------------------------------------------------------------------------------//
+            /*Este bloco de código insere as constantes de períodos do dia em uma lista
+             * que os retorna de forma aleatória levando em consideração o valor do peso atribuído.
+             */
+            ListaAleatoriaPonderada<LocalTime[]> probabilidadeHorario = new ListaAleatoriaPonderada<>();
+            probabilidadeHorario.adicionar(MANHA_EARLY, 1);
+            probabilidadeHorario.adicionar(MANHA_MID, 2.5); //(1.0, 3.5]
+            probabilidadeHorario.adicionar(MANHA_LATE, 2); // (3.5, 5.5]
+            probabilidadeHorario.adicionar(TARDE_EARLY, 1.5);//(5.5, 7.0]
+            probabilidadeHorario.adicionar(TARDE_MID, 1.5);//(7.0, 8.5]
+            probabilidadeHorario.adicionar(TARDE_LATE, 1);//(8.5, 9.5]
+            probabilidadeHorario.adicionar(NOITE_EARLY, 1);//(9.5, 10.5]
+            probabilidadeHorario.adicionar(NOITE_MID, 0.5);//(10.5, 11.0]
+            probabilidadeHorario.adicionar(NOITE_LATE, 0.25);//(11.0, 11.25]
+            probabilidadeHorario.adicionar(MADRUGADA, 0.5);//(11.25, 11.75]
+
+            //----------------------------------------------------------------------------------------------------------//
+            /*Este bloco funciona de maneira similar ao anterior. Desta vez a lista com
+             * valores ponderados retorna um tipo de voo.
+             */
+            ListaAleatoriaPonderada<TipoVoo> probabilidadeTipoVoo = new ListaAleatoriaPonderada<>();
+
+            probabilidadeTipoVoo.adicionar(TipoVoo.ECONOMICO, TipoVoo.ECONOMICO.getProporcaoVoos());//[0.0, 7.5]
+            probabilidadeTipoVoo.adicionar(TipoVoo.EXECUTIVO, TipoVoo.EXECUTIVO.getProporcaoVoos());//(7.5, 9.5]
+            probabilidadeTipoVoo.adicionar(TipoVoo.PRIMEIRA_CLASSE, TipoVoo.PRIMEIRA_CLASSE.getProporcaoVoos()); //(9.5, 10.0]
+
+            //----------------------------------------------------------------------------------------------------------//
+            /* Aqui acontece as declarações e inicializações que serão utilizadas
+             * durante o loop de criação de voos
+             */
+            gerarAeroportos("src/main/resources/templates/statics/aeroportos.json");
+            List<Voo> voos = new ArrayList<>(); //Para fins de teste, uma lista com todos os voos criados.
+
+            List<String> chaves = new ArrayList<>(AEROPORTOS.keySet());
+            int quantidadeChaves = chaves.size();
+
+            Aeroporto destino;
+            boolean destinoValido = false;
+
+            LocalDate now = LocalDate.now(); //Os voos serão criados a partir da data atual
+            LocalDate dataVoo;
+            LocalTime horaVoo;
+            TipoVoo classeVoo;
+            TipoVoo[] tiposVoo = TipoVoo.values();
+
+            //-------------------------------------------------------------------------------------//
+            for(Map.Entry<String, Aeroporto> entrada: AEROPORTOS.entrySet()) { //Cada elemento desse loop é um aeroporto
+                Aeroporto origem = entrada.getValue();
+                for(int i = 0; i < dias; i++) { //Este loop representa cada
+                    for(int j = 0; j < origem.mediaVoosDiarios() / 2; j++) { //Este loop representa cada voo de ida do aeroporto
+
+                        //--------------------------------------------------------------------------------------------------//
+                        /* Este loop gera um destino válido. Um aeroporto que possui uma movimentação de +130000
+                         * passageiros por ano pode gerar um voo para qualquer aeroporto que esteja a
+                         * pelo menos 70km de distância.
+                         * Caso o aeroporto possua uma movimentação de passageiros inferior a esta, a distância máxima
+                         * que um voo poderá ser criado é de 900km.
+                         */
+                        do {
+                            destino = AEROPORTOS.get(chaves.get((int) (Math.random() * quantidadeChaves)));
+
+                            if(!destino.equals(origem) && origem.distancia(destino) >= 70)
+                                if(origem.numeroPassageirosAno * coeficienteReducao >= 130000)
+                                    destinoValido = true;
+                                else if(origem.distancia(destino) < 900)
+                                    destinoValido = true;
+
+                        } while(!destinoValido);
+
+                        //--------------------------------------------------------------------------------------------------//
+
+                        dataVoo = now.plusDays(i);
+                        LocalTime[] tempo = probabilidadeHorario.obter();
+                        horaVoo = gerarHorarioValido(tempo);
+                        classeVoo = probabilidadeTipoVoo.obter();
+
+                    }
+                }
+            }
+            /*
+            for(int i = 0;i < dias;i++) {
+                for(int j = 0; j < VOOS_DOMESTICOS_DIARIOS; j++) {
+                    aeroportoOrigemDestino = gerarAeroportoOrigemDestino(aeroportos);
+
+
+                    try {
+                        Voo voo = new Voo(classeVoo,
+                                aeroportoOrigemDestino[0], aeroportoOrigemDestino[1],
+                                LocalDateTime.of(dataVoo, horaVoo));
+
+                        voos.add(voo);
+                    } catch(IllegalArgumentException e) {
+                        j--;
+                    }
+                }
+            }
+            */
+            return voos;
+        }
+
+        public static LocalTime gerarHorarioValido(LocalTime[] intervaloPossivel) {
+            int horarioMaximo = (intervaloPossivel[1].getHour() * 60) + intervaloPossivel[1].getMinute();
+            int horarioMinimo = (intervaloPossivel[0].getHour() * 60) + intervaloPossivel[0].getMinute();
+
+            int intervaloPossivelMinutos = horarioMaximo - horarioMinimo;
+            int minutos = (int) (Math.random() * intervaloPossivelMinutos);
+            minutos = Uteis.arredondarParaProximo5(minutos);
+
+
+            int horarioHora = (int) Math.floor((double) minutos / 60);
+            int horarioMinutos = (int) ((((double) minutos / 60) - horarioHora) * 60);
+            horarioMinutos = Uteis.arredondarParaProximo5(horarioMinutos);
+
+            /*
+             * Esta operação é necessária pois o parâmetro do valor de um objeto é uma referência ao objeto
+             * e não ao objeto em si. Ao solicitar uma nova instância idêntica, o objeto original continuará intacto.
+             */
+            LocalTime horarioValido = LocalTime.of(intervaloPossivel[0].getHour(), intervaloPossivel[0].getMinute());
+            horarioValido = horarioValido.plusHours(horarioHora).plusMinutes(horarioMinutos);
+
+            return horarioValido;
+        }
+
+        /**
+         * A partir dessa classe é possível gerar vários novos objetos Aeroporto
+         * usando um arquivo JSON
+         */
+        private static Aeroporto[] gerarAeroportos(String localArquivo) {
+            StringBuilder aeroportoJson = new StringBuilder();
+            File file = new File(localArquivo);
+
+            try(Scanner scanner = new Scanner(file)) {
+                while(scanner.hasNextLine()) {
+                    aeroportoJson.append(scanner.nextLine());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Aeroporto[] aeroportos = new Gson().fromJson(String.valueOf(aeroportoJson), Aeroporto[].class);
+            for(Aeroporto aeroporto: aeroportos) {
+                AEROPORTOS.put(aeroporto.sigla, aeroporto);
+                aeroporto.voosDaqui = new TreeSet<>();
+                aeroporto.voosParaAqui = new TreeSet<>();
+            }
+
+            return aeroportos;
+        }
+
+        private static Aeroporto[] gerarAeroportoOrigemDestino(Aeroporto[] aeroportos) {
+            Aeroporto[] aeroportoOrigemDestino = new Aeroporto[2];
+
+            do {
+                aeroportoOrigemDestino[0] = aeroportos[(int) (Math.random() * aeroportos.length)];
+                aeroportoOrigemDestino[1] = aeroportos[(int) (Math.random() * aeroportos.length)];
+            } while(aeroportoOrigemDestino[0].equals(aeroportoOrigemDestino[1]));
+
+            return aeroportoOrigemDestino;
+        }
+    }
+
 }

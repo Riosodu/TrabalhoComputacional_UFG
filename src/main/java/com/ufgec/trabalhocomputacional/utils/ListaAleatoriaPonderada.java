@@ -1,5 +1,6 @@
 package com.ufgec.trabalhocomputacional.utils;
 
+import java.time.LocalTime;
 import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
