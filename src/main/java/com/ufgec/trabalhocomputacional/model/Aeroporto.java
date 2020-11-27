@@ -1,7 +1,10 @@
 package com.ufgec.trabalhocomputacional.model;
 
 import com.google.gson.Gson;
+import com.sun.istack.NotNull;
 import com.ufgec.trabalhocomputacional.classes.TipoVoo;
+import com.ufgec.trabalhocomputacional.utils.Grafo;
+import com.ufgec.trabalhocomputacional.utils.Aresta;
 import com.ufgec.trabalhocomputacional.utils.Haversine;
 import com.ufgec.trabalhocomputacional.utils.ListaAleatoriaPonderada;
 import com.ufgec.trabalhocomputacional.utils.Uteis;
@@ -27,21 +30,23 @@ import java.util.*;
 public class Aeroporto implements Comparable<Aeroporto>{
 
     @Id
-    private String nome;
+    private final String nome;
 
-    private String sigla;
+    private final String sigla;
 
-    private String cidade;
+    private final String cidade;
 
-    private String estado;
+    private final String estado;
 
-    private String siglaEstado;
+    private final String siglaEstado;
 
     private int numeroPassageirosAno;
 
-    private double latitude;
+    private int numeroPassageirosAnoOriginal;
 
-    private double longitude;
+    private final double latitude;
+
+    private final double longitude;
 
 
 
@@ -49,19 +54,8 @@ public class Aeroporto implements Comparable<Aeroporto>{
      * Nesta variável estão armazenados todos os aeroportos válidos(criados)
      */
     public static final SortedMap<String, Aeroporto> AEROPORTOS = new TreeMap<>();
-    /**
-     * Nesta variável estão armazenadas todas as decolagens de um aeroporto
-     */
-    private NavigableSet<Voo> voosDaqui = new TreeSet<>();
-    /**
-     * Nesta variável estão armazenados todos os pousos em um aeroporto
-     */
-    private NavigableSet<Voo> voosParaAqui = new TreeSet<>();
 
-    /**
-     * Este número representa o coeficiente de redução do número de passageiros por ano.
-     */
-    private static final int coeficienteReducao = 5;
+    public static final Grafo<Aeroporto, Voo> VOOS = new Grafo<>(100);
 
     Aeroporto(String nome, String sigla, String cidade, String estado, String siglaEstado,
               int numeroPassageirosAno, double latitude, double longitude) {
@@ -87,7 +81,12 @@ public class Aeroporto implements Comparable<Aeroporto>{
     }
 
     private void retificarNumeroPassageirosAno() {
-        numeroPassageirosAno = numeroPassageirosAno / coeficienteReducao;
+        if(numeroPassageirosAno<=37500) {
+            numeroPassageirosAnoOriginal = numeroPassageirosAno;
+        } else {
+            numeroPassageirosAnoOriginal = numeroPassageirosAno;
+            numeroPassageirosAno = (int) (50 * Math.sqrt(15 * numeroPassageirosAno));
+        }
     }
 
     public String getNome() {
@@ -129,7 +128,6 @@ public class Aeroporto implements Comparable<Aeroporto>{
      * @return distância entre dois aeroportos;
      */
     public double distancia(Aeroporto outroAeroporto) {
-        if()
         return Haversine.distance(this.latitude, this.longitude, outroAeroporto.latitude, outroAeroporto.longitude);
     }
 
@@ -139,12 +137,18 @@ public class Aeroporto implements Comparable<Aeroporto>{
      * @param dataFinal é a data que delimitará o fim do intervalo de busca
      */
     public List<Voo> voosDaquiNumIntervalo(LocalDate dataInicial, LocalDate dataFinal) {
-        Voo[] voos = voosIntervaloData(dataInicial, dataFinal);
+        List<Voo> voos = new ArrayList<>();
+        boolean estaNoIntervalo;
+        LocalDate tempDate;
 
-        Voo elementoInicial = voosDaqui.ceiling(voos[0]);
-        Voo elementoFinal = voosDaqui.floor(voos[1]);
-
-        return new ArrayList<>(voosDaqui.subSet(elementoInicial, elementoFinal));
+        for(Aresta<Voo> aresta:  VOOS.getArestasDe(this)) {
+            tempDate = aresta.getObjetoDado().horarioPartida.toLocalDate();
+            estaNoIntervalo = (tempDate.isEqual(dataInicial) || tempDate.isAfter(dataInicial))
+                    && (tempDate.isEqual(dataFinal) || tempDate.isBefore(dataFinal));
+            if (estaNoIntervalo)
+                voos.add(aresta.getObjetoDado());
+        }
+        return voos;
     }
 
     /**
@@ -153,33 +157,32 @@ public class Aeroporto implements Comparable<Aeroporto>{
      * @param dataFinal é a data que delimitará o fim do intervalo de busca
      */
     public List<Voo> voosParaAquiNumIntervalo(LocalDate dataInicial, LocalDate dataFinal) {
-        Voo[] voos = voosIntervaloData(dataInicial, dataFinal);
+        List<Voo> voos = new ArrayList<>();
+        boolean estaNoIntervalo;
+        LocalDate tempDate;
 
-        Voo elementoInicial = voosParaAqui.ceiling(voos[0]);
-        Voo elementoFinal = voosParaAqui.floor(voos[1]);
-
-        return new ArrayList<>(voosParaAqui.subSet(elementoInicial, elementoFinal));
-    }
-
-    /**
-     * Esta classe encapsula código em comum entre os métodos
-     * voosDaquiNumIntervalo e voosParaAquiNumIntervalo()
-     */
-    private Voo[] voosIntervaloData(LocalDate dataInicial, LocalDate dataFinal) {
-        Voo[] voos = new Voo[2];
-        LocalDateTime inicial = LocalDateTime.of(dataInicial, LocalTime.of(0,0));
-        LocalDateTime f_nal = LocalDateTime.of(dataFinal, LocalTime.of(23,59,59));
-
-        voos[0] = new Voo();
-        voos[0].horarioPartida = inicial;
-        voos[1] = new Voo();
-        voos[1].horarioPartida = f_nal;
-
+        for(Aresta<Voo> aresta:  VOOS.getArestasPara(this)) {
+            tempDate = aresta.getObjetoDado().horarioPartida.toLocalDate();
+            estaNoIntervalo = (tempDate.isEqual(dataInicial) || tempDate.isAfter(dataInicial))
+                    && (tempDate.isEqual(dataFinal) || tempDate.isBefore(dataFinal));
+            if (estaNoIntervalo)
+                voos.add(aresta.getObjetoDado());
+        }
         return voos;
     }
 
     public List<Voo> voosParaAquiDe(Aeroporto origem) {
-        return null;
+        List<Voo> voos = new ArrayList<>();
+        for(Aresta<Voo> voo: VOOS.getArestasDePara(origem, this))
+            voos.add(voo.getObjetoDado());
+        return voos;
+    }
+
+    public List<Voo> voosDaquiPara(Aeroporto destino) {
+        List<Voo> voos = new ArrayList<>();
+        for(Aresta<Voo> voo: VOOS.getArestasDePara(this, destino))
+            voos.add(voo.getObjetoDado());
+        return voos;
     }
 
     public int mediaVoosDiarios() {
@@ -281,15 +284,8 @@ public class Aeroporto implements Comparable<Aeroporto>{
             id = hashCode();
 
             try { //Checa se já não existe armazenado um objeto como este, caso não, adiciona ao armazenamento
-                if(localOrigem.voosDaqui.contains(this))
+                if(!VOOS.adicionarAresta(localOrigem, localDestino, this, localOrigem.distancia(localDestino)))
                     throw new IllegalArgumentException("Um voo idêntico a este já existe!");
-                else
-                    localOrigem.voosDaqui.add(this);
-
-                if(localDestino.voosParaAqui.contains(this))
-                    throw new IllegalArgumentException("Um voo idêntico a este já existe!");
-                else
-                    localDestino.voosParaAqui.add(this);
             } catch(IllegalArgumentException e) {
                 e.printStackTrace();
                 throw e;
@@ -414,10 +410,20 @@ public class Aeroporto implements Comparable<Aeroporto>{
 
             DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm");
 
-            toString.append("Voo de número:").append(Integer.toHexString(id));
-            toString.append("\nLocal de origem: ").append(localOrigem.getNome());
-            toString.append("\nLocal de destino: ").append(localDestino.getNome());
-            toString.append("\nHorário de partida: ").append(horarioPartida.format(formatter1)).append("\t\t| Previsão de chegada: ").append(previsaoChegada.format(formatter1));
+            toString.append("Voo de número: #").append(Integer.toHexString(id).toUpperCase());
+
+            toString.append("\nLocal de origem: ").append(localOrigem.cidade).append(" - ")
+                    .append(localOrigem.siglaEstado).append(" | ")
+                    .append(localOrigem.nome);
+
+
+            toString.append("\nLocal de destino: ").append(localDestino.cidade).append(" - ")
+                    .append(localDestino.siglaEstado).append(" | ")
+                    .append(localDestino.nome);
+
+            toString.append("\nHorário de partida: ")
+                    .append(horarioPartida.format(formatter1)).append(" | Previsão de chegada: ")
+                    .append(previsaoChegada.format(formatter1));
 
             toString.append("\nClasses: ");
             TipoVoo[] tiposVoo = tipoVoo.getClassesDisponiveis();
@@ -515,7 +521,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
                             destino = AEROPORTOS.get(chaves.get((int) (Math.random() * quantidadeChaves)));
 
                             if(!destino.equals(origem) && origem.distancia(destino) >= 70)
-                                if(origem.numeroPassageirosAno * coeficienteReducao >= 130000)
+                                if(origem.numeroPassageirosAnoOriginal >= 130000)
                                     destinoValido = true;
                                 else if(origem.distancia(destino) < 900)
                                     destinoValido = true;
@@ -527,29 +533,19 @@ public class Aeroporto implements Comparable<Aeroporto>{
                         dataVoo = now.plusDays(i);
                         LocalTime[] tempo = probabilidadeHorario.obter();
                         horaVoo = gerarHorarioValido(tempo);
+                        LocalDateTime horarioVoo = LocalDateTime.of(dataVoo, horaVoo);
                         classeVoo = probabilidadeTipoVoo.obter();
 
+                        try {
+                            Voo voo = new Voo(classeVoo, origem, destino, horarioVoo);
+                            voos.add(voo);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-            /*
-            for(int i = 0;i < dias;i++) {
-                for(int j = 0; j < VOOS_DOMESTICOS_DIARIOS; j++) {
-                    aeroportoOrigemDestino = gerarAeroportoOrigemDestino(aeroportos);
 
-
-                    try {
-                        Voo voo = new Voo(classeVoo,
-                                aeroportoOrigemDestino[0], aeroportoOrigemDestino[1],
-                                LocalDateTime.of(dataVoo, horaVoo));
-
-                        voos.add(voo);
-                    } catch(IllegalArgumentException e) {
-                        j--;
-                    }
-                }
-            }
-            */
             return voos;
         }
 
@@ -595,8 +591,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
             Aeroporto[] aeroportos = new Gson().fromJson(String.valueOf(aeroportoJson), Aeroporto[].class);
             for(Aeroporto aeroporto: aeroportos) {
                 AEROPORTOS.put(aeroporto.sigla, aeroporto);
-                aeroporto.voosDaqui = new TreeSet<>();
-                aeroporto.voosParaAqui = new TreeSet<>();
+                VOOS.adicionarVertice(aeroporto);
             }
 
             return aeroportos;

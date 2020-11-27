@@ -9,7 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GeradorVoosTest {
-    @Test
+
     void gerarHorarioValidoTeste() {
         LocalTime[] intervalo = {LocalTime.of(0,0), LocalTime.of(12,30)};
         LocalTime horario;
@@ -20,7 +20,7 @@ class GeradorVoosTest {
         }
     }
 
-    /*@Test
+    @Test
     void gerarVoosTest() {
         List<Aeroporto.Voo> voos = Aeroporto.GeradorVoos.gerarVoos(4);
 
@@ -29,5 +29,5 @@ class GeradorVoosTest {
         }
 
         System.out.println(voos.size());
-    }*/
+    }
 }
