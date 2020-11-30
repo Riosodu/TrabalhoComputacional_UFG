@@ -1,10 +1,10 @@
 package com.ufgec.trabalhocomputacional.utils;
 
+import com.ufgec.trabalhocomputacional.model.Aeroporto;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Deque;
+import java.util.List;
 
 class GrafoTest {
     @Test
@@ -22,28 +22,34 @@ class GrafoTest {
 
         grafo.adicionarAresta('a','b', 1,0);
         grafo.adicionarAresta('b','c', 2,0);
-        grafo.adicionarAresta('c','d', 3,0);
-        grafo.adicionarAresta('d','e', 4,0);
-        grafo.adicionarAresta('e','h', 5,0);
-        grafo.adicionarAresta('c','f', 6,0);
-        grafo.adicionarAresta('f','g', 7,0);
-        grafo.adicionarAresta('h','c', 8,0);
-        grafo.adicionarAresta('h', 'c', 9,0);
+        grafo.adicionarAresta('b','f', 3, 0);
+        grafo.adicionarAresta('c','d', 4,0);
+        grafo.adicionarAresta('d','e', 5,0);
+        grafo.adicionarAresta('e','h', 6,0);
+        grafo.adicionarAresta('h','c', 7,0);
+        grafo.adicionarAresta('c','f', 8,0);
+        grafo.adicionarAresta('f','g', 9,0);
+        grafo.adicionarAresta('f', 'h', 10, 0);
+        grafo.adicionarAresta('h', 'c', 11,0);
 
-        for(Aresta<Integer> aresta: grafo.getArestasPara('c'))
-            System.out.println(aresta.getObjetoDado());
+
+        for(ConteudoAresta<Integer> conteudoAresta : grafo.getArestasPara('c'))
+            System.out.println(conteudoAresta.getObjetoDado());
+
+        System.out.println("\n\n--------------------------------------");
+        List<Deque<Character>> lista = grafo.rotaViaDFS('a', 'h', 3);
+        System.out.println("Quantidade de rotas: " + lista.size());
+        for(Deque<Character> rota: lista) {
+            System.out.println("Quantidade de elementos: " + rota.size());
+            for(Character c: rota)
+                System.out.print(c + " -> ");
+        }
     }
 
     @Test
     void testes() {
-        System.out.println("Iniciado");
-        int x = 70000;
-
-        System.out.println("X inserido: " + x);
-        x = (int) (50 * Math.sqrt(15 * x));
-        System.out.println("Novo X: " + x);
-
-        x = (int) Math.pow(x*15., 2) / 50;
-        System.out.println("X reconstruído: " + x);
+        System.out.println((Math.pow(2, 4)*(4+Math.pow(5,6)))/365);
     }
+
+
 }

@@ -1,10 +1,9 @@
 package com.ufgec.trabalhocomputacional.model;
 
 import com.google.gson.Gson;
-import com.sun.istack.NotNull;
 import com.ufgec.trabalhocomputacional.classes.TipoVoo;
 import com.ufgec.trabalhocomputacional.utils.Grafo;
-import com.ufgec.trabalhocomputacional.utils.Aresta;
+import com.ufgec.trabalhocomputacional.utils.ConteudoAresta;
 import com.ufgec.trabalhocomputacional.utils.Haversine;
 import com.ufgec.trabalhocomputacional.utils.ListaAleatoriaPonderada;
 import com.ufgec.trabalhocomputacional.utils.Uteis;
@@ -141,12 +140,12 @@ public class Aeroporto implements Comparable<Aeroporto>{
         boolean estaNoIntervalo;
         LocalDate tempDate;
 
-        for(Aresta<Voo> aresta:  VOOS.getArestasDe(this)) {
-            tempDate = aresta.getObjetoDado().horarioPartida.toLocalDate();
+        for(ConteudoAresta<Voo> conteudoAresta :  VOOS.getArestasDe(this)) {
+            tempDate = conteudoAresta.getObjetoDado().horarioPartida.toLocalDate();
             estaNoIntervalo = (tempDate.isEqual(dataInicial) || tempDate.isAfter(dataInicial))
                     && (tempDate.isEqual(dataFinal) || tempDate.isBefore(dataFinal));
             if (estaNoIntervalo)
-                voos.add(aresta.getObjetoDado());
+                voos.add(conteudoAresta.getObjetoDado());
         }
         return voos;
     }
@@ -161,27 +160,43 @@ public class Aeroporto implements Comparable<Aeroporto>{
         boolean estaNoIntervalo;
         LocalDate tempDate;
 
-        for(Aresta<Voo> aresta:  VOOS.getArestasPara(this)) {
-            tempDate = aresta.getObjetoDado().horarioPartida.toLocalDate();
-            estaNoIntervalo = (tempDate.isEqual(dataInicial) || tempDate.isAfter(dataInicial))
-                    && (tempDate.isEqual(dataFinal) || tempDate.isBefore(dataFinal));
+        for(ConteudoAresta<Voo> conteudoAresta :  VOOS.getArestasPara(this)) {
+            tempDate = conteudoAresta.getObjetoDado().horarioPartida.toLocalDate();
+            estaNoIntervalo = (tempDate.isAfter(dataInicial) || tempDate.isEqual(dataInicial))
+                    && (tempDate.isBefore(dataFinal) || tempDate.isEqual(dataFinal));
             if (estaNoIntervalo)
-                voos.add(aresta.getObjetoDado());
+                voos.add(conteudoAresta.getObjetoDado());
         }
         return voos;
     }
 
     public List<Voo> voosParaAquiDe(Aeroporto origem) {
         List<Voo> voos = new ArrayList<>();
-        for(Aresta<Voo> voo: VOOS.getArestasDePara(origem, this))
+        for(ConteudoAresta<Voo> voo: VOOS.getArestasDePara(origem, this))
             voos.add(voo.getObjetoDado());
         return voos;
     }
 
     public List<Voo> voosDaquiPara(Aeroporto destino) {
         List<Voo> voos = new ArrayList<>();
-        for(Aresta<Voo> voo: VOOS.getArestasDePara(this, destino))
+        for(ConteudoAresta<Voo> voo: VOOS.getArestasDePara(this, destino))
             voos.add(voo.getObjetoDado());
+        return voos;
+    }
+
+    public List<Voo> voosDaquiParaNumIntervalo(Aeroporto para, LocalDate dataInicial, LocalDate dataFinal) {
+        List<Voo> voos = new ArrayList<>();
+        LocalDate tempDate;
+        boolean estaNoIntervalo;
+
+        for(ConteudoAresta<Voo> conteudoAresta: VOOS.getArestasDePara(this, para)) {
+            tempDate = conteudoAresta.getObjetoDado().horarioPartida.toLocalDate();
+            estaNoIntervalo = (tempDate.isAfter(dataInicial) || tempDate.isEqual(dataInicial))
+                    && (tempDate.isBefore(dataFinal) || tempDate.isEqual(dataFinal));
+            if (estaNoIntervalo)
+                voos.add(conteudoAresta.getObjetoDado());
+        }
+
         return voos;
     }
 
@@ -446,15 +461,15 @@ public class Aeroporto implements Comparable<Aeroporto>{
     public static class GeradorVoos {
         //--------------------------------------------------------------------------------------------------------------//
         //Este bloco define constantes de períodos do dia.
-        private static final LocalTime[] MANHA_EARLY = {LocalTime.of(6, 0), LocalTime.of(7,59)};
-        private static final LocalTime[] MANHA_MID = {LocalTime.of(8, 0), LocalTime.of(9,59)};
+        private static final LocalTime[] MANHA_EARLY = {LocalTime.of(6, 0), LocalTime.of(7, 59)};
+        private static final LocalTime[] MANHA_MID = {LocalTime.of(8, 0), LocalTime.of(9, 59)};
         private static final LocalTime[] MANHA_LATE = {LocalTime.of(10, 0), LocalTime.of(11, 59)};
         private static final LocalTime[] TARDE_EARLY = {LocalTime.of(12, 0), LocalTime.of(13, 59)};
         private static final LocalTime[] TARDE_MID = {LocalTime.of(14, 0), LocalTime.of(15, 59)};
-        private static final LocalTime[] TARDE_LATE = {LocalTime.of(16, 0), LocalTime.of(17,59)};
-        private static final LocalTime[] NOITE_EARLY = {LocalTime.of(18, 0), LocalTime.of(19,59)};
+        private static final LocalTime[] TARDE_LATE = {LocalTime.of(16, 0), LocalTime.of(17, 59)};
+        private static final LocalTime[] NOITE_EARLY = {LocalTime.of(18, 0), LocalTime.of(19, 59)};
         private static final LocalTime[] NOITE_MID = {LocalTime.of(20, 0), LocalTime.of(21, 59)};
-        private static final LocalTime[] NOITE_LATE = {LocalTime.of(22, 0), LocalTime.of(23,59)};
+        private static final LocalTime[] NOITE_LATE = {LocalTime.of(22, 0), LocalTime.of(23, 59)};
         private static final LocalTime[] MADRUGADA = {LocalTime.of(0, 0), LocalTime.of(5, 59)};
         //--------------------------------------------------------------------------------------------------------------//
 
@@ -505,10 +520,10 @@ public class Aeroporto implements Comparable<Aeroporto>{
             TipoVoo[] tiposVoo = TipoVoo.values();
 
             //-------------------------------------------------------------------------------------//
-            for(Map.Entry<String, Aeroporto> entrada: AEROPORTOS.entrySet()) { //Cada elemento desse loop é um aeroporto
+            for (Map.Entry<String, Aeroporto> entrada : AEROPORTOS.entrySet()) { //Cada elemento desse loop é um aeroporto
                 Aeroporto origem = entrada.getValue();
-                for(int i = 0; i < dias; i++) { //Este loop representa cada
-                    for(int j = 0; j < origem.mediaVoosDiarios() / 2; j++) { //Este loop representa cada voo de ida do aeroporto
+                for (int i = 0; i < dias; i++) { //Este loop representa cada dia
+                    for (int j = 0; j < origem.mediaVoosDiarios() / 2; j++) { //Este loop representa cada voo de ida do aeroporto
 
                         //--------------------------------------------------------------------------------------------------//
                         /* Este loop gera um destino válido. Um aeroporto que possui uma movimentação de +130000
@@ -520,13 +535,13 @@ public class Aeroporto implements Comparable<Aeroporto>{
                         do {
                             destino = AEROPORTOS.get(chaves.get((int) (Math.random() * quantidadeChaves)));
 
-                            if(!destino.equals(origem) && origem.distancia(destino) >= 70)
-                                if(origem.numeroPassageirosAnoOriginal >= 130000)
+                            if (!destino.equals(origem) && origem.distancia(destino) >= 70)
+                                if (origem.numeroPassageirosAnoOriginal >= 130000)
                                     destinoValido = true;
-                                else if(origem.distancia(destino) < 900)
+                                else if (origem.distancia(destino) < 900)
                                     destinoValido = true;
 
-                        } while(!destinoValido);
+                        } while (!destinoValido);
 
                         //--------------------------------------------------------------------------------------------------//
 
@@ -539,7 +554,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
                         try {
                             Voo voo = new Voo(classeVoo, origem, destino, horarioVoo);
                             voos.add(voo);
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -563,8 +578,9 @@ public class Aeroporto implements Comparable<Aeroporto>{
             horarioMinutos = Uteis.arredondarParaProximo5(horarioMinutos);
 
             /*
-             * Esta operação é necessária pois o parâmetro do valor de um objeto é uma referência ao objeto
-             * e não ao objeto em si. Ao solicitar uma nova instância idêntica, o objeto original continuará intacto.
+             * Esta operação é necessária pois o valor de um parâmetro é uma referência ao objeto
+             * e não o objeto em si. Ao solicitar uma nova instância idêntica, o objeto original continuará intacto,
+             * mantendo seu status de constante.
              */
             LocalTime horarioValido = LocalTime.of(intervaloPossivel[0].getHour(), intervaloPossivel[0].getMinute());
             horarioValido = horarioValido.plusHours(horarioHora).plusMinutes(horarioMinutos);
@@ -580,33 +596,26 @@ public class Aeroporto implements Comparable<Aeroporto>{
             StringBuilder aeroportoJson = new StringBuilder();
             File file = new File(localArquivo);
 
-            try(Scanner scanner = new Scanner(file)) {
-                while(scanner.hasNextLine()) {
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
                     aeroportoJson.append(scanner.nextLine());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Aeroporto[] aeroportos = new Gson().fromJson(String.valueOf(aeroportoJson), Aeroporto[].class);
-            for(Aeroporto aeroporto: aeroportos) {
+            Aeroporto[] aeroportosArquivo = new Gson().fromJson(String.valueOf(aeroportoJson), Aeroporto[].class);
+
+            List<Aeroporto> aeroportos = new ArrayList<>();
+            Collections.addAll(aeroportos, aeroportosArquivo);
+            aeroportos.sort(null);
+
+            for (Aeroporto aeroporto : aeroportos) {
                 AEROPORTOS.put(aeroporto.sigla, aeroporto);
                 VOOS.adicionarVertice(aeroporto);
             }
 
-            return aeroportos;
-        }
-
-        private static Aeroporto[] gerarAeroportoOrigemDestino(Aeroporto[] aeroportos) {
-            Aeroporto[] aeroportoOrigemDestino = new Aeroporto[2];
-
-            do {
-                aeroportoOrigemDestino[0] = aeroportos[(int) (Math.random() * aeroportos.length)];
-                aeroportoOrigemDestino[1] = aeroportos[(int) (Math.random() * aeroportos.length)];
-            } while(aeroportoOrigemDestino[0].equals(aeroportoOrigemDestino[1]));
-
-            return aeroportoOrigemDestino;
+            return aeroportosArquivo;
         }
     }
-
 }

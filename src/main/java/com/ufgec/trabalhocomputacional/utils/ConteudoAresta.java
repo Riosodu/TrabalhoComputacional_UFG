@@ -2,11 +2,11 @@ package com.ufgec.trabalhocomputacional.utils;
 
 import java.util.Objects;
 
-public class Aresta<A> {
+public class ConteudoAresta<A> {
     private final double peso;
     private final A objetoDado;
 
-    public Aresta(double peso, A objeto) {
+    public ConteudoAresta(double peso, A objeto) {
         this.peso = peso;
         this.objetoDado = objeto;
     }
@@ -22,9 +22,9 @@ public class Aresta<A> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Aresta)) return false;
-        Aresta<A> aresta = (Aresta<A>) o;
-        return objetoDado.equals(aresta.objetoDado);
+        if (!(o instanceof ConteudoAresta)) return false;
+        ConteudoAresta<A> conteudoAresta = (ConteudoAresta<A>) o;
+        return objetoDado.equals(conteudoAresta.objetoDado);
     }
 
     @Override

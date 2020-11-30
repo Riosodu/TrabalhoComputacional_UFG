@@ -22,7 +22,7 @@ class GeradorVoosTest {
 
     @Test
     void gerarVoosTest() {
-        List<Aeroporto.Voo> voos = Aeroporto.GeradorVoos.gerarVoos(4);
+        List<Aeroporto.Voo> voos = Aeroporto.GeradorVoos.gerarVoos(365);
 
         for(Aeroporto.Voo voo: voos) {
             System.out.println(voo + "\n");
