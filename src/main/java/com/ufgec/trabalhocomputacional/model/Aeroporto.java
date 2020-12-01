@@ -52,9 +52,13 @@ public class Aeroporto implements Comparable<Aeroporto>{
     /**
      * Nesta variável estão armazenados todos os aeroportos válidos(criados)
      */
-    public static final SortedMap<String, Aeroporto> AEROPORTOS = new TreeMap<>();
+    private static final SortedMap<String, Aeroporto> AEROPORTOS = new TreeMap<>();
 
-    public static final Grafo<Aeroporto, Voo> VOOS = new Grafo<>(100);
+    private static final Grafo<Aeroporto, Voo> VOOS = new Grafo<>(100);
+
+    private static final Grafo<Aeroporto, Rota> ROTAS_DISTANCIA = new Grafo<>(100);
+    private static final Grafo<Aeroporto, Rota> ROTAS_TEMPO = new Grafo<>(100);
+    private static final Grafo<Aeroporto, Rota> ROTAS_PRECO = new Grafo<>(100);
 
     Aeroporto(String nome, String sigla, String cidade, String estado, String siglaEstado,
               int numeroPassageirosAno, double latitude, double longitude) {
@@ -198,6 +202,10 @@ public class Aeroporto implements Comparable<Aeroporto>{
         }
 
         return voos;
+    }
+
+    public static List<Deque<Aeroporto>> getPossiveisRotas(Aeroporto de, Aeroporto para, int maximoConexoes) {
+        return VOOS.rotaViaDFS(de, para, maximoConexoes);
     }
 
     public int mediaVoosDiarios() {
