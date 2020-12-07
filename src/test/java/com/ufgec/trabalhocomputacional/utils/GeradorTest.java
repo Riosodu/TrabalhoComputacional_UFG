@@ -6,23 +6,21 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class GeradorVoosTest {
+class GeradorTest {
 
     void gerarHorarioValidoTeste() {
         LocalTime[] intervalo = {LocalTime.of(0,0), LocalTime.of(12,30)};
         LocalTime horario;
 
         for(int i=0; i < 20; i++) {
-            horario = Aeroporto.GeradorVoos.gerarHorarioValido(intervalo);
+            horario = Aeroporto.Gerador.gerarHorarioValido(intervalo);
             System.out.println(horario);
         }
     }
 
     @Test
     void gerarVoosTest() {
-        List<Aeroporto.Voo> voos = Aeroporto.GeradorVoos.gerarVoos(365);
+        List<Aeroporto.Voo> voos = Aeroporto.Gerador.gerarVoos(365);
 
         for(Aeroporto.Voo voo: voos) {
             System.out.println(voo + "\n");

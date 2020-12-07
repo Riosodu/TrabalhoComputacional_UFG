@@ -56,10 +56,6 @@ public class Aeroporto implements Comparable<Aeroporto>{
 
     private static final Grafo<Aeroporto, Voo> VOOS = new Grafo<>(100);
 
-    private static final Grafo<Aeroporto, Rota> ROTAS_DISTANCIA = new Grafo<>(100);
-    private static final Grafo<Aeroporto, Rota> ROTAS_TEMPO = new Grafo<>(100);
-    private static final Grafo<Aeroporto, Rota> ROTAS_PRECO = new Grafo<>(100);
-
     Aeroporto(String nome, String sigla, String cidade, String estado, String siglaEstado,
               int numeroPassageirosAno, double latitude, double longitude) {
         this.nome = nome;
@@ -122,6 +118,10 @@ public class Aeroporto implements Comparable<Aeroporto>{
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public static Aeroporto getAeroportoPorSigla(String sigla) {
+        return AEROPORTOS.get(sigla);
     }
 
     /**
@@ -336,12 +336,16 @@ public class Aeroporto implements Comparable<Aeroporto>{
             return previsaoChegada;
         }
 
+        public TipoVoo getTipoVoo() {
+            return tipoVoo;
+        }
+
         /**
          * Este método calcula o horário previsto de chegada do voo no seu destino
          */
         private void setPrevisaoChegada() {
             double distancia = localOrigem.distancia(localDestino);
-            double razaoTempo = distancia / 1000; //A media da velocidade de voos comerciais é de 1000km/
+            double razaoTempo = distancia / 1000; //A media da velocidade de voos comerciais é de 1000km/h
 
             int horas, minutos;
             horas = (int) razaoTempo;
@@ -466,7 +470,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
     /**
      * Esta classe é uma classe de utilidade que gera voos aleatoriamente, respeitando certos parâmetros.
      */
-    public static class GeradorVoos {
+    public static class Gerador {
         //--------------------------------------------------------------------------------------------------------------//
         //Este bloco define constantes de períodos do dia.
         private static final LocalTime[] MANHA_EARLY = {LocalTime.of(6, 0), LocalTime.of(7, 59)};
@@ -508,7 +512,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
             probabilidadeTipoVoo.adicionar(TipoVoo.EXECUTIVO, TipoVoo.EXECUTIVO.getProporcaoVoos());//(7.5, 9.5]
             probabilidadeTipoVoo.adicionar(TipoVoo.PRIMEIRA_CLASSE, TipoVoo.PRIMEIRA_CLASSE.getProporcaoVoos()); //(9.5, 10.0]
 
-            //----------------------------------------------------------------------------------------------------------//
+            //--------------------------------------------------------------------------------------------------------//
             /* Aqui acontece as declarações e inicializações que serão utilizadas
              * durante o loop de criação de voos
              */
@@ -531,9 +535,33 @@ public class Aeroporto implements Comparable<Aeroporto>{
             for (Map.Entry<String, Aeroporto> entrada : AEROPORTOS.entrySet()) { //Cada elemento desse loop é um aeroporto
                 Aeroporto origem = entrada.getValue();
                 for (int i = 0; i < dias; i++) { //Este loop representa cada dia
-                    for (int j = 0; j < origem.mediaVoosDiarios() / 2; j++) { //Este loop representa cada voo de ida do aeroporto
+                    int retornos = 0;
+                    //Caso já haja voos para este aeroporto neste dia
+                    if(origem.voosParaAquiNumIntervalo(now.plusDays(i), now.plusDays(i)) .size() > 0) {
+                        LocalTime[] intervalo = new LocalTime[2];
+                        intervalo[1] = LocalTime.of(23,59);
+                        LocalDateTime horarioVoo;
 
-                        //--------------------------------------------------------------------------------------------------//
+
+                        //Então para cada voo gerar um retorno
+                        for(Voo voo: origem.voosParaAquiNumIntervalo(now.plusDays(i), now.plusDays(i))) {
+                            try {
+                                intervalo[0] = voo.getPrevisaoChegada().plusMinutes(45).toLocalTime();
+                                dataVoo = now.plusDays(i);
+                                horaVoo = gerarHorarioValido(intervalo);
+                                horarioVoo = LocalDateTime.of(dataVoo, horaVoo);
+
+                                Voo v = new Voo(voo.tipoVoo, voo.localDestino, voo.localOrigem, horarioVoo);
+                                voos.add(v);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    //Este loop representa cada voo que sai do aeroporto que não seja um retorno
+                    for (int j = 0; j < (origem.mediaVoosDiarios()/2)-retornos; j++) {
+                        //--------------------------------------------------------------------------------------------//
                         /* Este loop gera um destino válido. Um aeroporto que possui uma movimentação de +130000
                          * passageiros por ano pode gerar um voo para qualquer aeroporto que esteja a
                          * pelo menos 70km de distância.
@@ -551,7 +579,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
 
                         } while (!destinoValido);
 
-                        //--------------------------------------------------------------------------------------------------//
+                        //--------------------------------------------------------------------------------------------//
 
                         dataVoo = now.plusDays(i);
                         LocalTime[] tempo = probabilidadeHorario.obter();
@@ -564,11 +592,11 @@ public class Aeroporto implements Comparable<Aeroporto>{
                             voos.add(voo);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            j--;
                         }
                     }
                 }
             }
-
             return voos;
         }
 
@@ -597,7 +625,7 @@ public class Aeroporto implements Comparable<Aeroporto>{
         }
 
         /**
-         * A partir dessa classe é possível gerar vários novos objetos Aeroporto
+         * A partir desse método é possível gerar vários novos objetos Aeroporto
          * usando um arquivo JSON
          */
         private static Aeroporto[] gerarAeroportos(String localArquivo) {
